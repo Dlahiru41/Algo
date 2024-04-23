@@ -38,6 +38,9 @@ public class ShortestPathFinder {
             }
         }
 
+        // Print starting point coordinates
+        System.out.println("Starting Point Coordinates: (" + (start.x + 1) + ", " + (start.y + 1) + ")");
+
         queue.offer(start);
         visited[start.x][start.y] = true;
 
@@ -51,6 +54,7 @@ public class ShortestPathFinder {
             if (grid[x][y] == 'F') {
                 StringBuilder path = new StringBuilder();
                 Point node = current;
+                int step = 0; // Initialize step counter
                 while (node != null) {
                     if (parent[node.x][node.y] != null) {
                         int px = parent[node.x][node.y].x;
@@ -59,11 +63,14 @@ public class ShortestPathFinder {
                         else if (px == node.x + 1) directionAtStep[node.x][node.y] = "up";
                         else if (py == node.y - 1) directionAtStep[node.x][node.y] = "right";
                         else directionAtStep[node.x][node.y] = "left";
-                        path.insert(0, String.format("%d. Move %s to (%d,%d)\n", queue.size() + 1, directionAtStep[node.x][node.y], node.x + 1, node.y + 1));
+                        // Increment step counter and use it for printing step number
+                        step++;
+                        path.insert(0, String.format("%d. Move %s to (%d,%d)\n", step, directionAtStep[node.x][node.y], node.x + 1, node.y + 1));
                     }
                     node = parent[node.x][node.y];
                 }
-                return path.toString();
+
+                return path.toString()+"Done";
             }
 
             // Explore neighbors
