@@ -55,12 +55,10 @@ public class ShortestPathFinder {
                     if (parent[node.x][node.y] != null) {
                         int px = parent[node.x][node.y].x;
                         int py = parent[node.x][node.y].y;
-                        for (int i = 0; i < 4; i++) {
-                            if (px + dx[i] == node.x && py + dy[i] == node.y) {
-                                directionAtStep[node.x][node.y] = direction[i];
-                                break;
-                            }
-                        }
+                        if (px == node.x - 1) directionAtStep[node.x][node.y] = "down";
+                        else if (px == node.x + 1) directionAtStep[node.x][node.y] = "up";
+                        else if (py == node.y - 1) directionAtStep[node.x][node.y] = "right";
+                        else directionAtStep[node.x][node.y] = "left";
                         path.insert(0, String.format("%d. Move %s to (%d,%d)\n", queue.size() + 1, directionAtStep[node.x][node.y], node.x + 1, node.y + 1));
                     }
                     node = parent[node.x][node.y];
@@ -86,13 +84,6 @@ public class ShortestPathFinder {
     }
 
     public static void main(String[] args)  {
-        //grid is read from a text file
-        try{
-            BufferedReader br = new BufferedReader(new FileReader("grid.txt"));
-        }
-        catch (FileNotFoundException e){
-            e.printStackTrace();
-        }
 
         char[][] grid = {
                 {'.', '.', '.', '.', '.', '0', '.', '.', '.', 'S'},
