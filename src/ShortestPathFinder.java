@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -92,20 +93,46 @@ public class ShortestPathFinder {
 
     public static void main(String[] args)  {
 
-        char[][] grid = {
-                {'.', '.', '.', '.', '.', '0', '.', '.', '.', 'S'},
-                {'.', '.', '.', '.', '0', '.', '.', '.', '.', '.'},
-                {'0', '.', '.', '.', '.', '.', '0', '.', '.', '0'},
-                {'.', '.', '.', '0', '.', '.', '.', '.', '0', '.'},
-                {'.', 'F', '.', '.', '.', '.', '.', '.', '.', '0'},
-                {'.', '0', '.', '.', '.', '.', '.', '.', '.', '.'},
-                {'.', '.', '.', '.', '.', '.', '.', '0', '.', '.'},
-                {'.', '0', '.', '0', '.', '.', '0', '.', '.', '0'},
-                {'0', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
-                {'.', '0', '0', '.', '.', '.', '.', '0', '.', '.'}
-        };
+        char[][] grid = readGridFromFile("examples/maze20_5.txt");
+
+//        char[][] grid = {
+//                {'.', '.', '.', '.', '.', '0', '.', '.', '.', 'S'},
+//                {'.', '.', '.', '.', '0', '.', '.', '.', '.', '.'},
+//                {'0', '.', '.', '.', '.', '.', '0', '.', '.', '0'},
+//                {'.', '.', '.', '0', '.', '.', '.', '.', '0', '.'},
+//                {'.', 'F', '.', '.', '.', '.', '.', '.', '.', '0'},
+//                {'.', '0', '.', '.', '.', '.', '.', '.', '.', '.'},
+//                {'.', '.', '.', '.', '.', '.', '.', '0', '.', '.'},
+//                {'.', '0', '.', '0', '.', '.', '0', '.', '.', '0'},
+//                {'0', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+//                {'.', '0', '0', '.', '.', '.', '.', '0', '.', '.'}
+//        };
 
         String shortestPath = findShortestPath(grid);
         System.out.println(shortestPath);
+    }
+
+    static char[][] readGridFromFile(String filePath) {
+        char[][] grid = null;
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            int row = 0;
+            while ((line = br.readLine()) != null) {
+                if (grid == null) {
+                    grid = new char[line.length()][line.length()];
+                }
+                for (int col = 0; col < line.length(); col++) {
+                    grid[row][col] = line.charAt(col);
+                }
+                row++;
+            }
+        } catch (FileNotFoundException e) {
+            System.err.println("File not found: " + filePath);
+            e.printStackTrace();
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + filePath);
+            e.printStackTrace();
+        }
+        return grid;
     }
 }
